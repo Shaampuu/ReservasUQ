@@ -8,11 +8,10 @@ import lombok.Setter;
 @Getter
 @Setter
 @AllArgsConstructor
-
 public class Reserva {
     private String idInstalacion;
     private String cedulaPersona;
     private LocalDate diaReserva;
     private Horario horario;
-
+    private float costo; // Agregar este atributo
 }

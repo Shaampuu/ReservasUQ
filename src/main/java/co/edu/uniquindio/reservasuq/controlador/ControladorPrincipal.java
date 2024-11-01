@@ -9,6 +9,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.stage.Stage;
+import lombok.Getter;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -18,12 +19,16 @@ public class ControladorPrincipal implements ServiciosReservasUQ {
     private static ControladorPrincipal instancia;
     private final ReservasUQ reservasUQ;
 
+    // Almacena el usuario actual logueado en el sistema
+    @Getter
+    private static Persona usuarioActual;
+
     // Constructor privado para implementar Singleton
     private ControladorPrincipal() {
         reservasUQ = new ReservasUQ();
     }
 
-    // Método para obtener la instancia única de ControladorPrincipal
+    // Método para obtener la instancia única de ControladorPrincipal (Singleton)
     public static ControladorPrincipal getInstancia() {
         if (instancia == null) {
             instancia = new ControladorPrincipal();
@@ -31,11 +36,12 @@ public class ControladorPrincipal implements ServiciosReservasUQ {
         return instancia;
     }
 
-    // Implementación de métodos de ServiciosReservasUQ
-
+    // Implementación de los métodos de ServiciosReservasUQ
     @Override
     public Persona login(String correo, String contrasena) throws Exception {
-        return reservasUQ.login(correo, contrasena);
+        Persona persona = reservasUQ.login(correo, contrasena);
+        usuarioActual = persona; // Almacena el usuario actual después del login
+        return persona;
     }
 
     @Override
@@ -65,6 +71,7 @@ public class ControladorPrincipal implements ServiciosReservasUQ {
 
     // Métodos adicionales para la interfaz gráfica y la lógica de la aplicación
 
+    // Método para mostrar alertas reutilizable
     public void mostrarAlerta(String mensaje, String titulo, Alert.AlertType tipo) {
         Alert alert = new Alert(tipo);
         alert.setTitle(titulo);
@@ -73,28 +80,25 @@ public class ControladorPrincipal implements ServiciosReservasUQ {
         alert.showAndWait();
     }
 
+    // Método para abrir una nueva ventana en la aplicación
     public void navegarVentana(String nombreArchivoFxml, String tituloVentana) {
         try {
-            // Cargar la vista
             FXMLLoader loader = new FXMLLoader(getClass().getResource(nombreArchivoFxml));
             Parent root = loader.load();
-
-            // Crear la escena
             Scene scene = new Scene(root);
 
-            // Crear un nuevo escenario (ventana)
             Stage stage = new Stage();
             stage.setScene(scene);
             stage.setResizable(false);
             stage.setTitle(tituloVentana);
-
-            // Mostrar la nueva ventana
             stage.show();
         } catch (Exception e) {
+            mostrarAlerta("No se pudo abrir la ventana solicitada.", "Error", Alert.AlertType.ERROR);
             e.printStackTrace();
         }
     }
 
+    // Método para cerrar la ventana actual
     public void cerrarVentana(Node node) {
         Stage stage = (Stage) node.getScene().getWindow();
         stage.close();

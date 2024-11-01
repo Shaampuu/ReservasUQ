@@ -83,8 +83,20 @@ public class ReservasUQ implements ServiciosReservasUQ {
             throw new Exception("El horario no está disponible.");
         }
 
-        Reserva nuevaReserva = new Reserva(idInstalacion, cedulaPersona, diaReserva, horarioReserva);
+        // Calcular el costo
+        float costoReserva = 0.0f;
+        if (persona.getTipoPersona() == TipoPersona.EXTERNO) {
+            costoReserva = instalacion.getCosto(); // Costo para usuarios externos
+        } else {
+            costoReserva = instalacion.getCosto() * 0.8f; // Ejemplo: 20% de descuento para internos
+        }
+
+        // Crear la nueva reserva con el costo calculado
+        Reserva nuevaReserva = new Reserva(idInstalacion, cedulaPersona, diaReserva, horarioReserva, costoReserva);
         reservas.add(nuevaReserva);
+
+        // Informar del costo de la reserva
+        System.out.println("El costo de la reserva es: " + costoReserva);
 
         return nuevaReserva;
     }
