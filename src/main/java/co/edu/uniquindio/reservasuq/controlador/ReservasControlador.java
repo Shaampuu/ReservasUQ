@@ -14,7 +14,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
 
-public class ReservasControlador {
+public class    ReservasControlador {
 
     @FXML
     private TextField txtInstalacion;
