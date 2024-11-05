@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="co.edu.uniquindio.reservasuq.controlador.PanelAdminControlador"
+      alignment="center" spacing="20.0" prefHeight="400.0" prefWidth="400.0">
+
+    <Label text="Panel de Administración">
+        <font>
+            <Font size="18.0" />
+        </font>
+    </Label>
+
+    <Button text="Gestionar Instalaciones" onAction="#gestionarInstalaciones"/>
+    <Button text="Ver Reservas" onAction="#verReservas"/>
+    <Button text="Cerrar Sesión" onAction="#cerrarSesion"/>
+</VBox>
