@@ -83,7 +83,7 @@
                         <id>default-cli</id>
                         <configuration>
                             <mainClass>
-                                co.edu.uniquindio.reservasuq/co.edu.uniquindio.reservasuq.App.HelloApplication
+                                co.edu.uniquindio.reservasuq/co.edu.uniquindio.reservasuq.HelloApplication
                             </mainClass>
                             <launcher>app</launcher>
                             <jlinkZipName>app</jlinkZipName>

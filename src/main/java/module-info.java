@@ -7,6 +7,7 @@ module co.edu.uniquindio.reservasuq {
 
 
     opens co.edu.uniquindio.reservasuq to javafx.fxml;
-    exports co.edu.uniquindio.reservasuq.App;
-    opens co.edu.uniquindio.reservasuq.App to javafx.fxml;
+    opens co.edu.uniquindio.reservasuq.controlador;
+    opens co.edu.uniquindio.reservasuq.modelo;
+    exports co.edu.uniquindio.reservasuq;
 }
