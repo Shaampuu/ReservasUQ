@@ -1,63 +1,67 @@
 package co.edu.uniquindio.reservasuq.controlador;
 
-import co.edu.uniquindio.reservasuq.modelo.*;
+import co.edu.uniquindio.reservasuq.modelo.Reserva;
 import co.edu.uniquindio.reservasuq.modelo.enums.TipoPersona;
 import co.edu.uniquindio.reservasuq.servicio.ServiciosReservasUQ;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import lombok.Setter;
 
 import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.List;
 
-public class    ReservasControlador {
+public class ReservasControlador {
 
+    // Elementos de la interfaz (enlazados a través de FXML)
     @FXML
-    private TextField txtInstalacion;
-
+    private ComboBox<String> comboInstalacion;
     @FXML
-    private TextField txtCedulaPersona;
-
+    private DatePicker dateReserva;
     @FXML
-    private TextField txtDiaReserva;
+    private TextField txtHora;
 
-    @FXML
-    private TextField txtHoraReserva;
-
+    // ListView para mostrar las reservas
     @FXML
     private ListView<Reserva> listViewReservas;
 
+    // Servicio de reservas (instancia proporcionada por ControladorPrincipal)
     private final ServiciosReservasUQ servicioReservas;
-    // Método para establecer el tipo de persona
-    @Setter
-    private TipoPersona tipoPersona; // Campo para almacenar el tipo de persona
 
+    // Tipo de persona que realiza la reserva, con setter para inyección
+    @Setter
+    private TipoPersona tipoPersona;
+
+    // Constructor para inicializar el servicio de reservas
     public ReservasControlador() {
-        this.servicioReservas = ControladorPrincipal.getInstancia(); // Obtener la instancia del servicio
+        this.servicioReservas = ControladorPrincipal.getInstancia();
     }
 
+    // Inicialización del controlador
     @FXML
     public void initialize() {
         listarReservas(); // Llenar la ListView al iniciar
     }
 
-    // Método para crear una nueva reserva
+    // Acción al presionar el botón "Reservar"
     @FXML
     public void crearReserva(ActionEvent actionEvent) {
         try {
-            String idInstalacion = txtInstalacion.getText();
-            String cedulaPersona = txtCedulaPersona.getText();
-            LocalDate diaReserva = LocalDate.parse(txtDiaReserva.getText());
-            String horaReserva = txtHoraReserva.getText();
+            // Obtener los valores ingresados
+            String idInstalacion = comboInstalacion.getValue();
+            LocalDate diaReserva = dateReserva.getValue();
+            String horaReserva = txtHora.getText();
 
-            Reserva nuevaReserva = servicioReservas.crearReserva(idInstalacion, cedulaPersona, diaReserva, horaReserva);
+            // Crear la nueva reserva a través del servicio
+            Reserva nuevaReserva = servicioReservas.crearReserva(idInstalacion, String.valueOf(tipoPersona), diaReserva, horaReserva);
+
+            // Mostrar mensaje de éxito
             mostrarAlerta("Reserva creada con éxito. Tipo de persona: " + tipoPersona, "Éxito", Alert.AlertType.INFORMATION);
-            listarReservas(); // Actualizar la lista
+
+            // Actualizar la lista de reservas
+            listarReservas();
         } catch (Exception e) {
+            // Manejo de errores y muestra de alerta
             mostrarAlerta(e.getMessage(), "Error", Alert.AlertType.ERROR);
         }
     }

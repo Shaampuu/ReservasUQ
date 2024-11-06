@@ -69,6 +69,12 @@ public class ControladorPrincipal implements ServiciosReservasUQ {
         return reservasUQ.listarReservasPorPersona(cedulaPersona);
     }
 
+    // Implementación del método obtenerPersonas()
+    @Override
+    public List<Persona> obtenerPersonas() {
+        return reservasUQ.obtenerPersonas();
+    }
+
     // Métodos adicionales para la interfaz gráfica y la lógica de la aplicación
 
     // Método para mostrar alertas reutilizable

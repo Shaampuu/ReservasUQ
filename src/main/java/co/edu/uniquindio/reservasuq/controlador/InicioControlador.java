@@ -18,41 +18,39 @@ public class InicioControlador {
         this.controladorPrincipal = ControladorPrincipal.getInstancia();
     }
 
+    // Método para navegar a la ventana de inicio de sesión
     public void irIniciarSesion(ActionEvent actionEvent) {
-        controladorPrincipal.navegarVentana("/login.fxml", "Iniciar Sesión");
+        controladorPrincipal.navegarVentana("/InicioSesion.fxml", "Iniciar Sesión");
     }
 
+    // Método para navegar a la ventana de registro de persona
     public void irRegistroCliente(ActionEvent actionEvent) {
         controladorPrincipal.navegarVentana("/registro.fxml", "Registro Persona");
     }
 
-    // Método para abrir la ventana de crear reserva
+    // Método para abrir la ventana de creación de reserva
     public void abrirCrearReserva(ActionEvent event) {
-        controladorPrincipal.navegarVentana("crearReserva.fxml", "Crear Reserva");
+        controladorPrincipal.navegarVentana("/CrearReserva.fxml", "Crear Reserva");
     }
 
-    // Método para abrir la ventana de ver reservas
+    // Método para abrir la ventana de visualización de reservas
     public void verMisReservas(ActionEvent event) {
-        try {
-            controladorPrincipal.navegarVentana("misReservas.fxml", "Mis Reservas");
-        } catch (Exception e) {
-            controladorPrincipal.mostrarAlerta("Error al abrir la ventana de Mis Reservas.", "Error", Alert.AlertType.ERROR);
-            e.printStackTrace();
-        }
+        controladorPrincipal.navegarVentana("/Principal.fxml", "Mis Reservas");
     }
 
+    // Método para cerrar sesión y regresar a la pantalla de inicio de sesión
     @FXML
     private void cerrarSesion(ActionEvent event) {
         try {
-            // Cerrar la ventana actual
+            // Cierra la ventana actual
             Stage stageActual = (Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow();
             stageActual.close();
 
-            // Cargar la pantalla de inicio de sesión
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/co/edu/uniquindio/reservasuq/vista/inicioSesion.fxml"));
+            // Carga la pantalla de inicio de sesión
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/InicioSesion.fxml"));
             Pane root = loader.load();
 
-            // Abrir la pantalla de inicio de sesión en una nueva ventana
+            // Abre la pantalla de inicio de sesión en una nueva ventana
             Stage stage = new Stage();
             stage.setTitle("Inicio de Sesión");
             stage.setScene(new Scene(root));

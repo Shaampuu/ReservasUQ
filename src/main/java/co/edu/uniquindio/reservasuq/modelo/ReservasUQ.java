@@ -2,6 +2,7 @@ package co.edu.uniquindio.reservasuq.modelo;
 
 import co.edu.uniquindio.reservasuq.modelo.enums.TipoPersona;
 import co.edu.uniquindio.reservasuq.servicio.ServiciosReservasUQ;
+
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -83,19 +84,13 @@ public class ReservasUQ implements ServiciosReservasUQ {
             throw new Exception("El horario no está disponible.");
         }
 
-        // Calcular el costo
-        float costoReserva = 0.0f;
-        if (persona.getTipoPersona() == TipoPersona.EXTERNO) {
-            costoReserva = instalacion.getCosto(); // Costo para usuarios externos
-        } else {
-            costoReserva = instalacion.getCosto() * 0.8f; // Ejemplo: 20% de descuento para internos
-        }
+        float costoReserva = persona.getTipoPersona() == TipoPersona.EXTERNO
+                ? instalacion.getCosto()
+                : instalacion.getCosto() * 0.8f;
 
-        // Crear la nueva reserva con el costo calculado
         Reserva nuevaReserva = new Reserva(idInstalacion, cedulaPersona, diaReserva, horarioReserva, costoReserva);
         reservas.add(nuevaReserva);
 
-        // Informar del costo de la reserva
         System.out.println("El costo de la reserva es: " + costoReserva);
 
         return nuevaReserva;
@@ -115,5 +110,10 @@ public class ReservasUQ implements ServiciosReservasUQ {
             }
         }
         return reservasPersona;
+    }
+
+    // Método adicional para obtener la lista de personas registradas
+    public List<Persona> obtenerPersonas() {
+        return new ArrayList<>(personas); // Devuelve una copia de la lista de personas
     }
 }

@@ -15,7 +15,6 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 public class PersonaControlador {
@@ -33,69 +32,82 @@ public class PersonaControlador {
     private TextField txtPassword;
 
     @FXML
-    private ComboBox<TipoPersona> comboTipoPersona; // ComboBox para el tipo de persona
+    private ComboBox<TipoPersona> comboTipoPersona;
 
     @FXML
     private ListView<Persona> listViewPersonas;
 
-    private final List<Persona> personas; // Lista para almacenar las personas
-    private final ServiciosReservasUQ servicioReservas; // Servicio para gestionar reservas
+    private final ServiciosReservasUQ servicioReservas;
 
     public PersonaControlador() {
-        this.personas = new ArrayList<>();
-        this.servicioReservas = ControladorPrincipal.getInstancia(); // Obtener la instancia del servicio
+        this.servicioReservas = ControladorPrincipal.getInstancia();
     }
 
     @FXML
     public void initialize() {
-        listarPersonas(); // Llenar la ListView al iniciar
-        inicializarComboBox(); // Inicializar el ComboBox con los tipos de persona
+        listarPersonas();
+        inicializarComboBox();
     }
 
-    // Método para inicializar el ComboBox
     private void inicializarComboBox() {
         comboTipoPersona.getItems().addAll(TipoPersona.values());
     }
 
-    // Método para registrar una nueva persona
     @FXML
     public void registrarPersona(ActionEvent actionEvent) {
         try {
+            if (!validarCampos()) return;
+
             String cedula = txtCedula.getText();
             String nombre = txtNombre.getText();
             String email = txtEmail.getText();
             String password = txtPassword.getText();
-
-            // Obtener el tipo de persona seleccionado
             TipoPersona tipoPersona = comboTipoPersona.getValue();
-            if (tipoPersona == null) {
-                throw new Exception("Debes seleccionar un tipo de persona.");
-            }
 
-            // Registrar usando el servicio
             servicioReservas.registrarPersona(cedula, nombre, tipoPersona, email, password);
             mostrarAlerta("Registro exitoso.", "Éxito", Alert.AlertType.INFORMATION);
-            listarPersonas(); // Actualizar la lista
-            navegarAReservas(tipoPersona); // Navegar a reservas
+
+            listarPersonas();
+            navegarAReservas(tipoPersona);
         } catch (Exception e) {
             mostrarAlerta(e.getMessage(), "Error", Alert.AlertType.ERROR);
         }
     }
 
-    // Método para listar todas las personas en la ListView
     private void listarPersonas() {
         listViewPersonas.getItems().clear();
+        List<Persona> personas = servicioReservas.obtenerPersonas();
         listViewPersonas.getItems().addAll(personas);
     }
 
-    // Método para navegar a la ventana de reservas
-    private void navegarAReservas(TipoPersona tipoPersona) {
-        ReservasControlador reservasControlador = new ReservasControlador();
-        reservasControlador.setTipoPersona(tipoPersona); // Establecer el tipo de persona
-        ControladorPrincipal.getInstancia().navegarVentana("reservas.fxml", "Reservas"); // Asume que tienes este método
+    private boolean validarCampos() {
+        if (txtCedula.getText().isEmpty() || txtNombre.getText().isEmpty() || txtEmail.getText().isEmpty() || txtPassword.getText().isEmpty()) {
+            mostrarAlerta("Todos los campos son obligatorios.", "Error de validación", Alert.AlertType.ERROR);
+            return false;
+        }
+        if (comboTipoPersona.getValue() == null) {
+            mostrarAlerta("Debes seleccionar un tipo de persona.", "Error de validación", Alert.AlertType.ERROR);
+            return false;
+        }
+        return true;
     }
 
-    // Método para mostrar alertas
+    private void navegarAReservas(TipoPersona tipoPersona) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/ruta/a/reservas.fxml"));
+            Pane root = loader.load();
+            ReservasControlador reservasControlador = loader.getController();
+            reservasControlador.setTipoPersona(tipoPersona);
+
+            Stage stage = new Stage();
+            stage.setTitle("Reservas");
+            stage.setScene(new Scene(root));
+            stage.show();
+        } catch (IOException e) {
+            mostrarAlerta("No se pudo cargar la ventana de reservas.", "Error", Alert.AlertType.ERROR);
+        }
+    }
+
     private void mostrarAlerta(String mensaje, String titulo, Alert.AlertType tipo) {
         Alert alert = new Alert(tipo);
         alert.setTitle(titulo);
