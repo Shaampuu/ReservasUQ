@@ -19,7 +19,7 @@
 
     <TextField fx:id="txtCedula" promptText="Cédula" />
     <TextField fx:id="txtNombre" promptText="Nombre" />
-    <TextField fx:id="txtCorreo" promptText="Correo Institucional" />
+    <TextField fx:id="txtEmail" promptText="Correo Institucional" />
     <PasswordField fx:id="txtPassword" promptText="Contraseña" />
     <ComboBox fx:id="comboTipoPersona" promptText="Tipo de Persona" />
 

@@ -21,19 +21,14 @@ public class PersonaControlador {
 
     @FXML
     private TextField txtCedula;
-
     @FXML
     private TextField txtNombre;
-
     @FXML
     private TextField txtEmail;
-
     @FXML
     private TextField txtPassword;
-
     @FXML
     private ComboBox<TipoPersona> comboTipoPersona;
-
     @FXML
     private ListView<Persona> listViewPersonas;
 
@@ -98,6 +93,7 @@ public class PersonaControlador {
             Pane root = loader.load();
             ReservasControlador reservasControlador = loader.getController();
             reservasControlador.setTipoPersona(tipoPersona);
+            System.out.println("TipoPersona asignado a ReservasControlador: " + tipoPersona);
 
             Stage stage = new Stage();
             stage.setTitle("Reservas");
@@ -115,5 +111,4 @@ public class PersonaControlador {
         alert.setContentText(mensaje);
         alert.showAndWait();
     }
-
 }

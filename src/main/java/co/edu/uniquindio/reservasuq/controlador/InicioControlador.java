@@ -35,7 +35,7 @@ public class InicioControlador {
 
     // Método para abrir la ventana de visualización de reservas
     public void verMisReservas(ActionEvent event) {
-        controladorPrincipal.navegarVentana("/Principal.fxml", "Mis Reservas");
+        controladorPrincipal.navegarVentana("/listaReservas.fxml", "Mis Reservas");
     }
 
     // Método para cerrar sesión y regresar a la pantalla de inicio de sesión

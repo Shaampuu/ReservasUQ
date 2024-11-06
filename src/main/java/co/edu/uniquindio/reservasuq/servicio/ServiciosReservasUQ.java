@@ -21,10 +21,14 @@ public interface ServiciosReservasUQ {
     // Métodos para la gestión de reservas
     Reserva crearReserva(String idInstalacion, String cedulaPersona, LocalDate diaReserva, String horaReserva) throws Exception;
 
-    List<Reserva> listarTodasReservas();
+    List<Reserva> listarTodasReservas();  // Obtiene todas las reservas
 
-    List<Reserva> listarReservasPorPersona(String cedulaPersona);
+    List<Reserva> listarReservasPorPersona(String cedulaPersona);  // Obtiene las reservas de una persona específica
 
-    // Método para obtener la lista de personas
-    List<Persona> obtenerPersonas();
+    void cancelarReserva(String idReserva) throws Exception;  // Cancela una reserva por su ID
+
+    // Métodos adicionales
+    List<Persona> obtenerPersonas();  // Devuelve la lista de personas
+
+    List<String> obtenerNombresInstalaciones();  // Devuelve los nombres de todas las instalaciones
 }

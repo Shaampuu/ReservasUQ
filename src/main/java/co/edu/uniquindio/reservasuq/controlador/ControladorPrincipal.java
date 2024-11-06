@@ -69,10 +69,20 @@ public class ControladorPrincipal implements ServiciosReservasUQ {
         return reservasUQ.listarReservasPorPersona(cedulaPersona);
     }
 
-    // Implementación del método obtenerPersonas()
     @Override
     public List<Persona> obtenerPersonas() {
         return reservasUQ.obtenerPersonas();
+    }
+
+    @Override
+    public List<String> obtenerNombresInstalaciones() {
+        return reservasUQ.obtenerNombresInstalaciones();
+    }
+
+    @Override
+    public void cancelarReserva(String idReserva) throws Exception {
+        // Implementación del método para cancelar una reserva
+        reservasUQ.cancelarReserva(idReserva);
     }
 
     // Métodos adicionales para la interfaz gráfica y la lógica de la aplicación

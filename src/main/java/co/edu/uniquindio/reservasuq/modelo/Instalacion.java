@@ -38,7 +38,7 @@ public class Instalacion {
 
     // Método para realizar una reserva si hay disponibilidad y no se excede la capacidad
     public boolean realizarReserva(Reserva reserva) {
-        if (estaDisponible(reserva.getHorario()) && capacidadNoExcedida(reserva)) {
+        if (estaDisponible(reserva.getHorarioReserva()) && capacidadNoExcedida(reserva)) {
             reservas.add(reserva);
             return true;
         }
@@ -49,7 +49,7 @@ public class Instalacion {
     private boolean capacidadNoExcedida(Reserva reserva) {
         long reservasSimultaneas = reservas.stream()
                 .filter(r -> r.getDiaReserva().equals(reserva.getDiaReserva()) &&
-                        r.getHorario().equals(reserva.getHorario()))
+                        r.getHorarioReserva().equals(reserva.getHorarioReserva()))
                 .count();
 
         return reservasSimultaneas < aforoMaximo;
@@ -103,6 +103,6 @@ public class Instalacion {
     public boolean verificarDisponibilidad(LocalDate dia, Horario horario) {
         // Comprueba si ya existen reservas en el horario y día especificados
         return reservas.stream()
-                .noneMatch(r -> r.getDiaReserva().equals(dia) && r.getHorario().equals(horario));
+                .noneMatch(r -> r.getDiaReserva().equals(dia) && r.getHorarioReserva().equals(horario));
     }
 }

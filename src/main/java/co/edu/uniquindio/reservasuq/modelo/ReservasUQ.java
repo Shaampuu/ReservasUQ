@@ -8,6 +8,7 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class ReservasUQ implements ServiciosReservasUQ {
 
@@ -19,6 +20,14 @@ public class ReservasUQ implements ServiciosReservasUQ {
         personas = new ArrayList<>();
         instalaciones = new ArrayList<>();
         reservas = new ArrayList<>();
+
+        // Añadir instalaciones predefinidas
+        crearInstalacion("Piscina", 30, 0, new ArrayList<>());
+        crearInstalacion("Gimnasio", 20, 0, new ArrayList<>());
+        crearInstalacion("Cancha de fútbol", 50, 0, new ArrayList<>());
+        crearInstalacion("Cancha de baloncesto", 30, 0, new ArrayList<>());
+        crearInstalacion("Aulas de estudio grupal", 10, 0, new ArrayList<>());
+        crearInstalacion("Salones de eventos", 100, 0, new ArrayList<>());
     }
 
     @Override
@@ -88,13 +97,17 @@ public class ReservasUQ implements ServiciosReservasUQ {
                 ? instalacion.getCosto()
                 : instalacion.getCosto() * 0.8f;
 
-        Reserva nuevaReserva = new Reserva(idInstalacion, cedulaPersona, diaReserva, horarioReserva, costoReserva);
+        // Generar un ID único para la reserva
+        String idReserva = "R-" + System.currentTimeMillis();
+
+        Reserva nuevaReserva = new Reserva(idReserva, idInstalacion, cedulaPersona, diaReserva, horarioReserva, costoReserva);
         reservas.add(nuevaReserva);
 
         System.out.println("El costo de la reserva es: " + costoReserva);
 
         return nuevaReserva;
     }
+
 
     @Override
     public List<Reserva> listarTodasReservas() {
@@ -103,17 +116,36 @@ public class ReservasUQ implements ServiciosReservasUQ {
 
     @Override
     public List<Reserva> listarReservasPorPersona(String cedulaPersona) {
-        List<Reserva> reservasPersona = new ArrayList<>();
-        for (Reserva reserva : reservas) {
-            if (reserva.getCedulaPersona().equals(cedulaPersona)) {
-                reservasPersona.add(reserva);
-            }
-        }
-        return reservasPersona;
+        return reservas.stream()
+                .filter(reserva -> reserva.getCedulaPersona().equals(cedulaPersona))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public void cancelarReserva(String idReserva) throws Exception {
+        Reserva reserva = reservas.stream()
+                .filter(r -> r.getIdInstalacion().equals(idReserva)) // Asegúrate de usar el identificador correcto
+                .findFirst()
+                .orElseThrow(() -> new Exception("Reserva no encontrada."));
+
+        reservas.remove(reserva);
+        System.out.println("La reserva con ID " + idReserva + " ha sido cancelada.");
     }
 
     // Método adicional para obtener la lista de personas registradas
     public List<Persona> obtenerPersonas() {
         return new ArrayList<>(personas); // Devuelve una copia de la lista de personas
+    }
+
+    // Método adicional para obtener la lista de nombres de las instalaciones
+    public List<String> obtenerNombresInstalaciones() {
+        return instalaciones.stream()
+                .map(Instalacion::getNombre)
+                .collect(Collectors.toList());
+    }
+
+    // Método para obtener todas las instalaciones
+    public List<Instalacion> getInstalaciones() {
+        return new ArrayList<>(instalaciones);
     }
 }

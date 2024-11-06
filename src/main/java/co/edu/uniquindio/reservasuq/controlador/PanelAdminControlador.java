@@ -11,7 +11,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-class PanelAdminControlador {
+public class PanelAdminControlador {
 
     // Este método gestiona la lógica para abrir la pantalla de "Gestionar Instalaciones"
     @FXML
