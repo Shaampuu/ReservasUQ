@@ -14,9 +14,7 @@ import javafx.scene.control.Alert;
 
 public class ListaReservasControlador {
 
-    @FXML
-    private Button bttCancelarReserva;
-
+    public Button bttCancelarReserva;
     @FXML
     private TableColumn<Reserva, String> idColumn;
 

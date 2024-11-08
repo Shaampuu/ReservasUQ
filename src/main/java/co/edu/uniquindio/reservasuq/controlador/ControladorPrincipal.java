@@ -119,4 +119,7 @@ public class ControladorPrincipal implements ServiciosReservasUQ {
         Stage stage = (Stage) node.getScene().getWindow();
         stage.close();
     }
+
+
 }
+
